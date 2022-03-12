@@ -324,7 +324,7 @@ namespace GameWarriors.UIDomain.Core
             _lockPanel.SetParent(_screenCanvasTransform);
             _lockPanel.gameObject.SetActive(false);
             int length = uiMainConfig.PopupPoolCount;
-            if (uiMainConfig.ToastPrefab)
+            if (!uiMainConfig.ToastPrefab)
                 Debug.LogError("ToastPrefab has no assign object");
             _toastPool = new IToastItem[length];
             for (int i = 0; i < length; ++i)
