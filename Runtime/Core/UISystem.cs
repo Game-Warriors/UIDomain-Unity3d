@@ -181,7 +181,7 @@ namespace GameWarriors.UIDomain.Core
             int length = _screenStack.Count;
             var result = Parallel.For(0, length, (index, state) =>
             {
-                if (string.Compare(_screenStack[index].ScreenName, targetName) == 0)
+                if (_screenStack[index].ScreenName == targetName)
                     state.Break();
             });
             return result.LowestBreakIteration != null;
@@ -198,6 +198,21 @@ namespace GameWarriors.UIDomain.Core
             }
         }
 
+        void IScreen.LockAllInputs(bool isLockBack)
+        {
+            if (isLockBack)
+                _backLockState = true;
+            _lockPanel.SetAsLastSibling();
+            _lockPanel.gameObject.SetActive(true);
+        }
+
+        void IScreen.UnlockAllInputs(bool isUnlockBack)
+        {
+            if (isUnlockBack)
+                _backLockState = false;
+            _lockPanel.gameObject.SetActive(false);
+        }
+
         public Transform ShowBlackScreen(float length)
         {
             _screenBackPanel.ShowIn(length);
@@ -207,6 +222,19 @@ namespace GameWarriors.UIDomain.Core
         public void HideBlackScreen(float length, Action hideBlackPanelDone)
         {
             _screenBackPanel.FadeOut(length, hideBlackPanelDone);
+        }
+
+        public T FindScreenInStack<T>(string screenName) where T : UIScreenItem
+        {
+            int count = _screenStack?.Count ?? 0;
+            for (int i = 0; i < count; ++i)
+            {
+                if (_screenStack[i].ScreenName == screenName)
+                {
+                    return (T)_screenStack[i];
+                }
+            }
+            return null;
         }
 
         private void UIUpdate()
@@ -342,21 +370,6 @@ namespace GameWarriors.UIDomain.Core
             _screenStack = new List<UIScreenItem>();
             _screenPool = new Dictionary<string, UIScreenItem>();
             Resources.UnloadAsset(uiMainConfig);
-        }
-
-        void IScreen.LockAllInputs(bool isLockBack)
-        {
-            if (isLockBack)
-                _backLockState = true;
-            _lockPanel.SetAsLastSibling();
-            _lockPanel.gameObject.SetActive(true);
-        }
-
-        void IScreen.UnlockAllInputs(bool isUnlockBack)
-        {
-            if (isUnlockBack)
-                _backLockState = false;
-            _lockPanel.gameObject.SetActive(false);
         }
     }
 }

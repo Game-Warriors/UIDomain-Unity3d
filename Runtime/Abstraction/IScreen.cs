@@ -20,6 +20,7 @@ namespace GameWarriors.UIDomain.Abstraction
         void ClearScreens(bool isCloseLastScreen = true);
         void SetBackLockState(bool state);
         bool IsScreenInList(string targetName);
+        T FindScreenInStack<T>(string screenName) where T : UIScreenItem;
         void LockAllInputs(bool isLockBack = true);
         void UnlockAllInputs(bool isUnlockBack = true);
     }
