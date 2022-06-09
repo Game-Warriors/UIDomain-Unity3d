@@ -185,12 +185,12 @@ namespace GameWarriors.UIDomain.Core
             if (_screenStack.Count == 0)
                 return false;
             int length = _screenStack.Count;
-            var result = Parallel.For(0, length, (index, state) =>
+            for (int i = 0; i < length; ++i)
             {
-                if (_screenStack[index].ScreenName == targetName)
-                    state.Break();
-            });
-            return result.LowestBreakIteration != null;
+                if (_screenStack[i].ScreenName == targetName)
+                    return true;
+            }
+            return false;
         }
 
         void IAspectRatio.AdjustAspect(GameObject gameObject)
