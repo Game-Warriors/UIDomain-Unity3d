@@ -5,6 +5,7 @@ using GameWarriors.UIDomain.Data;
 using GameWarriors.UIDomain.Abstraction;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 namespace GameWarriors.UIDomain.Core
 {
@@ -48,6 +49,11 @@ namespace GameWarriors.UIDomain.Core
             {
                 await Task.Delay(100);
             }
+        }
+
+        public IEnumerator WaitForLoadingByCoroutine()
+        {
+            yield return new WaitUntil(() => _screenPool != null);
         }
 
         public void ShowStaticToast(string context)
