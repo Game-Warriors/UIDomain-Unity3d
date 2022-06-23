@@ -2,7 +2,7 @@
 
 namespace GameWarriors.UIDomain.Abstraction
 {
-    public enum MessagePopUpPlace
+    public enum EToastPlace
     {
         Up,
         Mid,
@@ -20,7 +20,7 @@ namespace GameWarriors.UIDomain.Abstraction
 
     public interface IToast
     {
-        void ShowStaticToast(string context);
-        void ShowDynamicToast(string context, MessagePopUpPlace typeMessage);
+        void ShowToast(string context);
+        void ShowToast(string context, EToastPlace typeMessage);
     }
 }

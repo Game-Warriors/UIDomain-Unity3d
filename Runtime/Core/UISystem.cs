@@ -56,21 +56,21 @@ namespace GameWarriors.UIDomain.Core
             yield return new WaitUntil(() => _screenPool != null);
         }
 
-        public void ShowStaticToast(string context)
+        public void ShowToast(string context)
         {
             IToastItem toastItem = _toastPool[0];
             toastItem.SetData(context);
             _uiEventHandler.OnToastRises(1.5f, toastItem);
         }
 
-        public void ShowDynamicToast(string context, MessagePopUpPlace typeMessage)
+        public void ShowToast(string context, EToastPlace typeMessage)
         {
             IToastItem toastItem = _toastPool[_positionIndex];
             toastItem.SetData(context);
-            if (typeMessage == MessagePopUpPlace.Up)
+            if (typeMessage == EToastPlace.Up)
                 toastItem.Position = new Vector2(0, 550 + (_positionIndex * 70));
             else
-                if (typeMessage == MessagePopUpPlace.Mid)
+                if (typeMessage == EToastPlace.Mid)
                 toastItem.Position = new Vector2(0, (_positionIndex * 70));
             else
                 toastItem.Position = new Vector2(0, -550 + (_positionIndex * 70));
