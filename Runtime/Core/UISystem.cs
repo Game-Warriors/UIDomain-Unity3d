@@ -19,7 +19,6 @@ namespace GameWarriors.UIDomain.Core
         private ImageBlackPanel _screenBackPanel;
         private Transform _lockPanel;
         private RectTransform _screenCanvasTransform;
-        private Canvas _screenCanvas;
         private RectTransform _mainCanvasTransform;
         private int _positionIndex;
         private bool _backLockState;
@@ -51,7 +50,8 @@ namespace GameWarriors.UIDomain.Core
             }
         }
 
-        public IEnumerator WaitForLoadingByCoroutine()
+        [UnityEngine.Scripting.Preserve]
+        public IEnumerator WaitForLoadingCoroutine()
         {
             yield return new WaitUntil(() => _screenPool != null);
         }
@@ -219,6 +219,13 @@ namespace GameWarriors.UIDomain.Core
             _lockPanel.gameObject.SetActive(false);
         }
 
+        void IScreen.ChangeCanvasCamera(Camera newCamera)
+        {
+            _mainCanvasTransform.GetComponent<Canvas>().worldCamera = newCamera;
+            _screenCanvasTransform.GetComponent<Canvas>().worldCamera = newCamera;
+            _uiEventHandler.OnCanvasCameraChange(newCamera);
+        }
+
         public Transform ShowBlackScreen(float length)
         {
             _screenBackPanel.ShowIn(length);
@@ -354,7 +361,6 @@ namespace GameWarriors.UIDomain.Core
             _lockPanel = GameObject.Instantiate(uiMainConfig.ScreenLockPanel);
             _mainCanvasTransform = GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<RectTransform>();
             _screenCanvasTransform = GameObject.FindGameObjectWithTag("ScreenCanvas").GetComponent<RectTransform>();
-            _screenCanvas = _screenCanvasTransform.GetComponent<Canvas>();
             _lockPanel.SetParent(_screenCanvasTransform);
             _lockPanel.gameObject.SetActive(false);
             int length = uiMainConfig.PopupPoolCount;

@@ -23,5 +23,6 @@ namespace GameWarriors.UIDomain.Abstraction
         T FindScreenInStack<T>(string screenName) where T : UIScreenItem;
         void LockAllInputs(bool isLockBack = true);
         void UnlockAllInputs(bool isUnlockBack = true);
+        void ChangeCanvasCamera(Camera newCamera);
     }
 }

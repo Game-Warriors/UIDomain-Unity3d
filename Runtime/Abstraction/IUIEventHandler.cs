@@ -1,5 +1,4 @@
 ﻿using System;
-
 using UnityEngine;
 
 namespace GameWarriors.UIDomain.Abstraction
@@ -14,5 +13,6 @@ namespace GameWarriors.UIDomain.Abstraction
         void OnOpenScreen(IUIScreen screen);
         void OnHideScreen(IUIScreen screen);
         void OnScreenForceClose(IUIScreen screen);
+        void OnCanvasCameraChange(Camera newCamera);
     }
 }
