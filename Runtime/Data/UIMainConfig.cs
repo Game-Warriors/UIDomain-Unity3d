@@ -24,6 +24,10 @@ namespace GameWarriors.UIDomain.Data
         [HideInInspector, SerializeField]
         private List<UIScreenItemData> _screenItems;
         [HideInInspector, SerializeField]
+        public Canvas _mainCanvasPrefab;
+        [HideInInspector, SerializeField]
+        public Canvas _screenCanvasPrefab;
+        [HideInInspector, SerializeField]
         private ImageBlackPanel _screenBlackPanelPrefab;
         [HideInInspector, SerializeField]
         private Transform _screenLockPanelPrefab;
@@ -37,6 +41,9 @@ namespace GameWarriors.UIDomain.Data
         public int PopupPoolCount => _popupPrefabCount;
         public RectTransform ToastPrefab => _popupPrefab;
         public Transform ScreenLockPanel => _screenLockPanelPrefab;
+
+        public Canvas MainCanvasPrefab => _mainCanvasPrefab;
+        public Canvas ScreenCanvasPrefab => _screenCanvasPrefab;
 
         public void SetScreensData(List<UIScreenItemData> itemPrefabList)
         {
@@ -59,10 +66,16 @@ namespace GameWarriors.UIDomain.Data
             _popupPrefabCount = ToastNotificationPoolCount;
         }
 
-        public void SetPanelData(ImageBlackPanel screenBlackPanel,Transform lockPanelPrefab)
+        public void SetPanelData(ImageBlackPanel screenBlackPanel, Transform lockPanelPrefab)
         {
             _screenBlackPanelPrefab = screenBlackPanel;
             _screenLockPanelPrefab = lockPanelPrefab;
+        }
+
+        public void SetCanvasPrefabs(Canvas mainCanvas, Canvas screenCanvas)
+        {
+            _mainCanvasPrefab = mainCanvas;
+            _screenCanvasPrefab = screenCanvas;
         }
     }
 }

@@ -10,6 +10,8 @@ namespace GameWarriors.UIDomain.MainUIEditor
     public class UIMainConfigEditorWindow : EditorWindow
     {
         private List<UIScreenItemData> _itemPrefabList;
+        private Canvas _mainCanvas;
+        private Canvas _screenCanvas;
         private ImageBlackPanel _screenBlackPanel;
         private Transform _screenLockPanel;
         private RectTransform _popupNotificationPrefab;
@@ -46,11 +48,16 @@ namespace GameWarriors.UIDomain.MainUIEditor
             _popupNotificationPoolCount = asset.PopupPoolCount;
             _screenBlackPanel = asset.ScreenBlackPanelPrefab;
             _screenLockPanel = asset.ScreenLockPanel;
+            _screenCanvas = asset.ScreenCanvasPrefab;
+            _mainCanvas = asset.MainCanvasPrefab;
         }
 
         void OnGUI()
         {
             GUILayout.Label("UI Main Configuration", EditorStyles.boldLabel);
+            _mainCanvas = EditorGUILayout.ObjectField("Main Canvas", _mainCanvas, typeof(Canvas), true) as Canvas;
+            _screenCanvas = EditorGUILayout.ObjectField("Screen Canvas", _screenCanvas, typeof(Canvas), true) as Canvas;
+
             _screenBlackPanel = EditorGUILayout.ObjectField("Screen BlackPanel", _screenBlackPanel, typeof(ImageBlackPanel), true) as ImageBlackPanel;
             _screenLockPanel = EditorGUILayout.ObjectField("Screen LockPanel", _screenLockPanel, typeof(Transform), true) as Transform;
             DrawPopupNofiticationConfig();
@@ -103,6 +110,7 @@ namespace GameWarriors.UIDomain.MainUIEditor
                 asset.SetScreensData(_itemPrefabList);
                 asset.SetToastNotificationData(_popupNotificationPrefab, _popupNotificationPoolCount);
                 asset.SetPanelData(_screenBlackPanel, _screenLockPanel);
+                asset.SetCanvasPrefabs(_mainCanvas, _screenCanvas);
                 EditorUtility.SetDirty(asset);
                 AssetDatabase.SaveAssets();
             }
