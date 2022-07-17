@@ -360,20 +360,21 @@ namespace GameWarriors.UIDomain.Core
             _screenBackPanel = GameObject.Instantiate(uiMainConfig.ScreenBlackPanelPrefab);
             _lockPanel = GameObject.Instantiate(uiMainConfig.ScreenLockPanel);
             GameObject mainCanvas = GameObject.FindGameObjectWithTag("MainCanvas");
-            if (_mainCanvasTransform == null && uiMainConfig.MainCanvasPrefab != null)
+            if (mainCanvas == null && uiMainConfig.MainCanvasPrefab != null)
                 _mainCanvasTransform = GameObject.Instantiate(uiMainConfig.MainCanvasPrefab).GetComponent<RectTransform>();
-            else
+            else if (mainCanvas != null)
                 _mainCanvasTransform = mainCanvas.GetComponent<RectTransform>();
+            else
+                throw new KeyNotFoundException("The main canvas has not found");
 
             GameObject screenCanvas = GameObject.FindGameObjectWithTag("ScreenCanvas");
-            if (_screenCanvasTransform == null && uiMainConfig.ScreenCanvasPrefab != null)
-            {
+            if (screenCanvas == null && uiMainConfig.ScreenCanvasPrefab != null)
                 _screenCanvasTransform = GameObject.Instantiate(uiMainConfig.ScreenCanvasPrefab).GetComponent<RectTransform>();
-            }
-            else
-            {
+            else if (screenCanvas != null)
                 _screenCanvasTransform = screenCanvas.GetComponent<RectTransform>();
-            }
+            else
+                throw new KeyNotFoundException("The screen canvas has not found");
+
             _lockPanel.SetParent(_screenCanvasTransform);
             _lockPanel.gameObject.SetActive(false);
             int length = uiMainConfig.PopupPoolCount;
