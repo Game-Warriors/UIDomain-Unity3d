@@ -62,7 +62,7 @@ namespace GameWarriors.UIDomain.MainUIEditor
             _screenLockPanel = EditorGUILayout.ObjectField("Screen LockPanel", _screenLockPanel, typeof(Transform), true) as Transform;
             DrawPopupNofiticationConfig();
 
-            _scrollViewRect = EditorGUILayout.BeginScrollView(_scrollViewRect, GUILayout.Height(position.height - 100), GUILayout.Width(position.width));
+            _scrollViewRect = EditorGUILayout.BeginScrollView(_scrollViewRect, GUILayout.Height(position.height - 150), GUILayout.Width(position.width));
             DrawScreenPrefabList();
             EditorGUILayout.EndScrollView();
             EditorGUILayout.Space();
