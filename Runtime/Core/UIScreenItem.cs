@@ -18,26 +18,26 @@ namespace GameWarriors.UIDomain.Core
         public IToast ToastNotification => _toastNotification;
         public IServiceProvider ServiceProvider => _serviceProvider;
 
-        public float OpenAnimationDuration
+        public virtual float OpenAnimationDuration
         {
             get
             {
                 if (Animation != null)
                 {
-                    var clip = Animation.GetClip(OpenScreenAnimationName);
+                    AnimationClip clip = Animation.GetClip(OpenScreenAnimationName);
                     return clip != null ? clip.length : 0;
                 }
                 return 0;
             }
         }
 
-        public float CloseAnimationDuration
+        public virtual float CloseAnimationDuration
         {
             get
             {
                 if (Animation != null)
                 {
-                    var clip = Animation.GetClip(CloseScreenAnimationName);
+                    AnimationClip clip = Animation.GetClip(CloseScreenAnimationName);
                     return clip != null ? clip.length : 0;
                 }
                 return 0;
@@ -84,11 +84,9 @@ namespace GameWarriors.UIDomain.Core
 
         public virtual void OnShow(Action onClose = null, bool showAnimation = true)
         {
-            Animation animation = Animation;
-            if (showAnimation && animation)
+            if (showAnimation)
             {
-                animation.Stop();
-                animation.Play(OpenScreenAnimationName);
+                PlayAnimation(OpenScreenAnimationName);
             }
 
             _onClose = onClose;
@@ -105,7 +103,10 @@ namespace GameWarriors.UIDomain.Core
                     delay = CloseAnimationDuration;
 
                 if (delay > 0)
-                    StartCoroutine(WaitAndAction(delay, Hide));
+                {
+                    StartCoroutine(WaitAndAction(delay, Deactive));
+                    PlayAnimation(CloseScreenAnimationName);
+                }
                 else
                     gameObject.SetActive(false);
             }
@@ -114,10 +115,14 @@ namespace GameWarriors.UIDomain.Core
         public virtual void OnClose(float delay = 0)
         {
             _onClose?.Invoke();
+
             if (delay <= 0)
                 delay = CloseAnimationDuration;
             if (delay > 0)
-                StartCoroutine(WaitAndAction(delay, Hide));
+            {
+                PlayAnimation(CloseScreenAnimationName);
+                StartCoroutine(WaitAndAction(delay, Deactive));
+            }
             else
                 ForceExit();
         }
@@ -142,9 +147,18 @@ namespace GameWarriors.UIDomain.Core
             action?.Invoke();
         }
 
-        private void Hide()
+        private void Deactive()
         {
             gameObject.SetActive(false);
+        }
+
+        private void PlayAnimation(string animationName)
+        {
+            if (Animation)
+            {
+                Animation.Stop();
+                Animation.Play(animationName);
+            }
         }
     }
 }

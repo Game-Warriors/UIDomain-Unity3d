@@ -32,13 +32,15 @@ namespace GameWarriors.UIDomain.Core
 
 
         [UnityEngine.Scripting.Preserve]
-        public UISystem(IUIEventHandler eventHandler, IUIResources resources)
+        public UISystem(IUIEventHandler eventHandler, IUIResources resources, IServiceProvider serviceProvider)
         {
             _uiEventHandler = eventHandler;
             if (resources == null)
                 resources = new DefaultResourseLoader();
             _uiEventHandler.SetUIUpdate(UIUpdate);
             resources.LoadResourceAsync(UIMainConfig.RESOURCES_PATH, LoadCompelete);
+
+            UIScreenItem.Initialization(this, serviceProvider, this);
         }
 
         [UnityEngine.Scripting.Preserve]

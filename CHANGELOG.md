@@ -1,3 +1,6 @@
+  version : 0.6.2
+  Fix show close animation bug
+  
   version : 0.6.1
   Fix editor UI elements adjustment bug
   
