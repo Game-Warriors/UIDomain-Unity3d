@@ -66,8 +66,8 @@ namespace GameWarriors.UIDomain.Core
         public virtual void Initialization()
         {
             _animation = GetComponent<Animation>();
-            if (_animation)
-                _animation.playAutomatically = false;
+            //if (_animation)
+            //    _animation.playAutomatically = false;
         }
 
         public virtual void SetActivation(bool state)
@@ -127,10 +127,10 @@ namespace GameWarriors.UIDomain.Core
                 ForceExit();
         }
 
-        public virtual void OnRequestCloseScreen(bool isLastScreen)
+        public virtual void OnRequestCloseScreen(bool isLastScreen, bool showOpenAnimation)
         {
             if (CanCloseByBack && !isLastScreen)
-                ScreenHandler.CloseScreen(ScreenName);
+                ScreenHandler.CloseScreen(ScreenName, showOpenAnimation);
         }
 
         public virtual void ForceExit()

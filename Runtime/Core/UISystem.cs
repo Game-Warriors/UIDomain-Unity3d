@@ -260,12 +260,12 @@ namespace GameWarriors.UIDomain.Core
                 if (lastIndex > 0)
                 {
                     UIScreenItem lastScreen = _screenStack[lastIndex];
-                    lastScreen.OnRequestCloseScreen(false);
+                    lastScreen.OnRequestCloseScreen(false, true);
                 }
                 else if (lastIndex == 0)
                 {
                     UIScreenItem lastScreen = _screenStack[lastIndex];
-                    lastScreen.OnRequestCloseScreen(true);
+                    lastScreen.OnRequestCloseScreen(true, false);
                     _uiEventHandler.OnCloseLastScreen();
                 }
             }

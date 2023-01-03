@@ -1,3 +1,6 @@
+  version : 0.6.3
+  add option in OnRequestCloseScreen method for showing open animation when close screen using back button
+
   version : 0.6.2
   Fix show close animation bug
   
