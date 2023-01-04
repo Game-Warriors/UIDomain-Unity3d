@@ -86,16 +86,15 @@ namespace GameWarriors.UIDomain.Core
             _backLockState = state;
         }
 
-        void IScreen.ShowScreen(string screenName, ECanvasType canvasType, EPreviosScreenAct previosScreenAct)
+        void IScreen.ShowScreen(string screenName, ECanvasType canvasType, EPreviosScreenAct previosScreenAct, Action onClose)
         {
-            ShowScreen<UIScreenItem>(screenName, canvasType, previosScreenAct);
+            ShowScreen<UIScreenItem>(screenName, canvasType, previosScreenAct, onClose);
         }
 
-        public T ShowScreen<T>(string screenName, ECanvasType canvasType, EPreviosScreenAct previosScreenAct) where T : UIScreenItem
+        public T ShowScreen<T>(string screenName, ECanvasType canvasType, EPreviosScreenAct previosScreenAct, Action onClose = default) where T : UIScreenItem
         {
             if (string.IsNullOrEmpty(screenName))
                 return default;
-            Action onClose = null;
             RectTransform parent = canvasType == ECanvasType.MainCanvas ? _mainCanvasTransform : _screenCanvasTransform;
             CheckScreenInstatiateState(screenName, parent);
 

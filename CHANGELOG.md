@@ -1,3 +1,6 @@
+  version : 0.6.4
+  add passing onClose deceleration argument event in show method
+
   version : 0.6.3
   add option in OnRequestCloseScreen method for showing open animation when close screen using back button
 
