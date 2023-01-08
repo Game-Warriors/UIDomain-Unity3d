@@ -119,7 +119,7 @@ namespace GameWarriors.UIDomain.Core
             return element as T;
         }
 
-        public void CloseScreen(string screenName, bool showOpenAnimation = false)
+        public void CloseScreen(string screenName, bool showOpenAnimation = true)
         {
             if (string.IsNullOrEmpty(screenName))
                 return;
@@ -143,16 +143,19 @@ namespace GameWarriors.UIDomain.Core
                     {
                         if (!openScreen.HasBlackScreen)
                         {
-                            float length = closeElement.CloseAnimationDuration;
-                            if (length > 0)
-                                _screenBackPanel.FadeOut(length, null);
-                            else
-                                _screenBackPanel.DisableScreen();
+                            if (_screenBackPanel.Activation)
+                            {
+                                float length = closeElement.CloseAnimationDuration;
+                                if (length > 0)
+                                    _screenBackPanel.FadeOut(length, null);
+                                else
+                                    _screenBackPanel.DisableScreen();
+                            }
                         }
-                        else
-                            if (!_screenBackPanel.Activation)
+                        else if (!_screenBackPanel.Activation)
                             _screenBackPanel.ShowIn(0.15f);
 
+                        showOpenAnimation = showOpenAnimation && !closeElement.HasBlackScreen;
                         openScreen.OnShow(showAnimation: showOpenAnimation);
                         _uiEventHandler.OnShowScreen(openScreen);
                     }

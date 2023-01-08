@@ -88,8 +88,8 @@ namespace GameWarriors.UIDomain.Core
             {
                 PlayAnimation(OpenScreenAnimationName);
             }
-
-            _onClose = onClose;
+            if (onClose != null)
+                _onClose = onClose;
             transform.SetAsLastSibling();
             StopAllCoroutines();
             gameObject.SetActive(true);
@@ -115,7 +115,7 @@ namespace GameWarriors.UIDomain.Core
         public virtual void OnClose(float delay = 0)
         {
             _onClose?.Invoke();
-
+            _onClose = null;
             if (delay <= 0)
                 delay = CloseAnimationDuration;
             if (delay > 0)

@@ -1,6 +1,6 @@
 {
   "name": "com.gamewarriors.uisystem",
-  "version": "0.6.4",
+  "version": "0.6.5",
   "displayName": "UI System",
   "description": "This package provide base structure for manage UI layout, like application screen stack and other screen and toast features",
   "unity": "2020.3",

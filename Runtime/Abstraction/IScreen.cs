@@ -14,7 +14,7 @@ namespace GameWarriors.UIDomain.Abstraction
 
         void ShowScreen(string screenName, ECanvasType canvasType, EPreviosScreenAct previosScreenAct, Action onClose = default);
         T ShowScreen<T>(string screenName, ECanvasType canvasType, EPreviosScreenAct previosScreenAct, Action onClose = default) where T : UIScreenItem;
-        void CloseScreen(string screenName, bool showOpenAnimation = false);
+        void CloseScreen(string screenName, bool showOpenAnimation = true);
         Transform ShowBlackScreen(float length);
         void HideBlackScreen(float length, Action hideBlackPanelDone);
         void ClearScreens(bool isCloseLastScreen = true);

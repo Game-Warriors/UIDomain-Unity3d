@@ -1,3 +1,6 @@
+  version : 0.6.5
+  fix ignoring show open animation after close has black screen screens
+
   version : 0.6.4
   add passing onClose deceleration argument event in show method
 
