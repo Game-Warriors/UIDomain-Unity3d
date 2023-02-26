@@ -6,6 +6,10 @@ namespace GameWarriors.UIDomain.Core
 {
     public class ImageBlackPanel : MonoBehaviour
     {
+        [Header("Black panel fade in length in second")]
+        [SerializeField] private float _fadeInLength = 0.15f;
+        [Header("Black panel fade out length in second")]
+        [SerializeField] private float _fadeOutLength = 0.15f;
         [SerializeField] private float _maxAlpha = 0.75f;
         [SerializeField] private Image _blackImage;
         private float _targetAlpha;
@@ -49,9 +53,9 @@ namespace GameWarriors.UIDomain.Core
             _blackImage.color = color;
         }
 
-        public void ShowIn(float second)
+        public void ShowIn()
         {
-
+            float second = _fadeInLength;
             transform.SetSiblingIndex(transform.parent.childCount - 1);
             _targetAlpha = _maxAlpha;
             _fadeSpeed = (_maxAlpha - _blackImage.color.a) / second;
@@ -61,8 +65,9 @@ namespace GameWarriors.UIDomain.Core
             gameObject.SetActive(true);
         }
 
-        public void FadeOut(float second, Action fadeOutDone)
+        public void FadeOut(Action fadeOutDone)
         {
+            float second = _fadeOutLength;
             _targetAlpha = 0;
             _fadeSpeed = (_blackImage.color.a) / second;
             _fadeOutDone = fadeOutDone;

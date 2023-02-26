@@ -1,3 +1,6 @@
+  version : 0.6.6
+  add search feature into ui system editor, add changeable variable for black panel fade in/out time
+
   version : 0.6.5
   fix ignoring show open animation after close has black screen screens
 

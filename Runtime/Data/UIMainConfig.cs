@@ -15,6 +15,12 @@ namespace GameWarriors.UIDomain.Data
 
         public string ScreenKey { get => _screenKey; set => _screenKey = value; }
         public UIScreenItem ScreenPrefab { get => _screenPrefab; set => _screenPrefab = value; }
+
+        public UIScreenItemData(string key)
+        {
+            _screenKey = key;
+            _screenPrefab = null;
+        }
     }
 
     public class UIMainConfig : ScriptableObject

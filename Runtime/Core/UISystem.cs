@@ -100,7 +100,7 @@ namespace GameWarriors.UIDomain.Core
 
             UIScreenItem element = _screenPool[screenName];
             if (element.HasBlackScreen)
-                _screenBackPanel.ShowIn(0.15f);
+                _screenBackPanel.ShowIn();
             else
                 _screenBackPanel.Activation = false;
 
@@ -147,13 +147,13 @@ namespace GameWarriors.UIDomain.Core
                             {
                                 float length = closeElement.CloseAnimationDuration;
                                 if (length > 0)
-                                    _screenBackPanel.FadeOut(length, null);
+                                    _screenBackPanel.FadeOut(null);
                                 else
                                     _screenBackPanel.DisableScreen();
                             }
                         }
                         else if (!_screenBackPanel.Activation)
-                            _screenBackPanel.ShowIn(0.15f);
+                            _screenBackPanel.ShowIn();
 
                         showOpenAnimation = showOpenAnimation && !closeElement.HasBlackScreen;
                         openScreen.OnShow(showAnimation: showOpenAnimation);
@@ -230,15 +230,15 @@ namespace GameWarriors.UIDomain.Core
             _uiEventHandler.OnCanvasCameraChange(newCamera);
         }
 
-        public Transform ShowBlackScreen(float length)
+        public Transform ShowBlackScreen()
         {
-            _screenBackPanel.ShowIn(length);
+            _screenBackPanel.ShowIn();
             return _screenBackPanel.TransformRef;
         }
 
-        public void HideBlackScreen(float length, Action hideBlackPanelDone)
+        public void HideBlackScreen(Action hideBlackPanelDone)
         {
-            _screenBackPanel.FadeOut(length, hideBlackPanelDone);
+            _screenBackPanel.FadeOut(hideBlackPanelDone);
         }
 
         public T FindScreenInStack<T>(string screenName) where T : UIScreenItem
