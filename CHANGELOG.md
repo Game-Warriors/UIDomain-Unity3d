@@ -1,3 +1,6 @@
+  version : 0.6.7
+  Fix compatibility to old unity dotnet
+
   version : 0.6.6
   add search feature into ui system editor, add changeable variable for black panel fade in/out time
 

@@ -17,8 +17,8 @@ namespace GameWarriors.UIDomain.MainUIEditor
         private Canvas _screenCanvas;
         private ImageBlackPanel _screenBlackPanel;
         private Transform _screenLockPanel;
-        private RectTransform _popupNotificationPrefab;
-        private int _popupNotificationPoolCount;
+        private RectTransform _toastPrefab;
+        private int _toastPoolCount;
 
         private bool _isDataChange;
         private Vector2 _scrollViewRect;
@@ -50,8 +50,8 @@ namespace GameWarriors.UIDomain.MainUIEditor
             else
                 _itemPrefabList = new List<UIScreenItemData>();
 
-            _popupNotificationPrefab = asset.ToastPrefab;
-            _popupNotificationPoolCount = asset.PopupPoolCount;
+            _toastPrefab = asset.ToastPrefab;
+            _toastPoolCount = asset.PopupPoolCount;
             _screenBlackPanel = asset.ScreenBlackPanelPrefab;
             _screenLockPanel = asset.ScreenLockPanel;
             _screenCanvas = asset.ScreenCanvasPrefab;
@@ -65,8 +65,8 @@ namespace GameWarriors.UIDomain.MainUIEditor
             _mainCanvas = EditorGUILayout.ObjectField("Main Canvas", _mainCanvas, typeof(Canvas), true) as Canvas;
             _screenCanvas = EditorGUILayout.ObjectField("Screen Canvas", _screenCanvas, typeof(Canvas), true) as Canvas;
 
-            _screenBlackPanel = EditorGUILayout.ObjectField("Screen BlackPanel", _screenBlackPanel, typeof(ImageBlackPanel), true) as ImageBlackPanel;
-            _screenLockPanel = EditorGUILayout.ObjectField("Screen LockPanel", _screenLockPanel, typeof(Transform), true) as Transform;
+            _screenBlackPanel = EditorGUILayout.ObjectField("Screen Black Panel", _screenBlackPanel, typeof(ImageBlackPanel), true) as ImageBlackPanel;
+            _screenLockPanel = EditorGUILayout.ObjectField("Screen Lock Panel", _screenLockPanel, typeof(Transform), true) as Transform;
             DrawPopupNofiticationConfig();
             EditorGUILayout.Space();
 
@@ -79,8 +79,8 @@ namespace GameWarriors.UIDomain.MainUIEditor
 
         private void DrawPopupNofiticationConfig()
         {
-            _popupNotificationPrefab = EditorGUILayout.ObjectField("Popup Notification Prefab", _popupNotificationPrefab, typeof(RectTransform), true) as RectTransform;
-            _popupNotificationPoolCount = EditorGUILayout.IntField("Popup Notification Pool Count", _popupNotificationPoolCount);
+            _toastPrefab = EditorGUILayout.ObjectField("Toast Prefab", _toastPrefab, typeof(RectTransform), true) as RectTransform;
+            _toastPoolCount = EditorGUILayout.IntField("Toast Pool Count", _toastPoolCount);
         }
 
         private void DrawScreenPrefabList()
@@ -134,7 +134,7 @@ namespace GameWarriors.UIDomain.MainUIEditor
             {
                 UIMainConfig asset = AssetDatabase.LoadAssetAtPath<UIMainConfig>(UIMainConfig.ASSET_PATH);
                 asset.SetScreensData(_itemPrefabList);
-                asset.SetToastNotificationData(_popupNotificationPrefab, _popupNotificationPoolCount);
+                asset.SetToastNotificationData(_toastPrefab, _toastPoolCount);
                 asset.SetPanelData(_screenBlackPanel, _screenLockPanel);
                 asset.SetCanvasPrefabs(_mainCanvas, _screenCanvas);
                 EditorUtility.SetDirty(asset);
@@ -199,7 +199,11 @@ namespace GameWarriors.UIDomain.MainUIEditor
             int length = _itemPrefabList.Count;
             for (int i = 0; i < length; ++i)
             {
-                if (_itemPrefabList[i].ScreenKey.Contains(newPattern, System.StringComparison.OrdinalIgnoreCase))
+#if UNITY_2021_1_OR_NEWER
+                if (_itemPrefabList[i].ScreenKey.Contains(newPattern, StringComparison.OrdinalIgnoreCase))
+#else
+                if (_itemPrefabList[i].ScreenKey.Contains(newPattern))
+#endif
                     _searchIndex.Add(i);
             }
         }
