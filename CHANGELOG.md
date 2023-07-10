@@ -1,3 +1,6 @@
+  version : 0.6.8
+  polish code structure, improve editor UI and fix clear screen not call OnClose bug
+
   version : 0.6.7
   Fix compatibility to old unity dotnet
 

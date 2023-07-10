@@ -38,7 +38,7 @@ namespace GameWarriors.UIDomain.Core
             if (resources == null)
                 resources = new DefaultResourseLoader();
             _uiEventHandler.SetUIUpdate(UIUpdate);
-            resources.LoadResourceAsync(UIMainConfig.RESOURCES_PATH, LoadCompelete);
+            resources.LoadResourceAsync(UIMainConfig.RESOURCES_PATH, LoadComplete);
 
             UIScreenItem.Initialization(this, serviceProvider, this);
         }
@@ -86,17 +86,17 @@ namespace GameWarriors.UIDomain.Core
             _backLockState = state;
         }
 
-        void IScreen.ShowScreen(string screenName, ECanvasType canvasType, EPreviosScreenAct previosScreenAct, Action onClose)
+        void IScreen.ShowScreen(string screenName, ECanvasType canvasType, EPreviousScreenAct previousScreenAct, Action onClose)
         {
-            ShowScreen<UIScreenItem>(screenName, canvasType, previosScreenAct, onClose);
+            ShowScreen<UIScreenItem>(screenName, canvasType, previousScreenAct, onClose);
         }
 
-        public T ShowScreen<T>(string screenName, ECanvasType canvasType, EPreviosScreenAct previosScreenAct, Action onClose = default) where T : UIScreenItem
+        public T ShowScreen<T>(string screenName, ECanvasType canvasType, EPreviousScreenAct previousScreenAct, Action onClose = default) where T : UIScreenItem
         {
             if (string.IsNullOrEmpty(screenName))
                 return default;
             RectTransform parent = canvasType == ECanvasType.MainCanvas ? _mainCanvasTransform : _screenCanvasTransform;
-            CheckScreenInstatiateState(screenName, parent);
+            CheckScreenInsatiateState(screenName, parent);
 
             UIScreenItem element = _screenPool[screenName];
             if (element.HasBlackScreen)
@@ -111,7 +111,7 @@ namespace GameWarriors.UIDomain.Core
                 element.IsDestroy = true;
             }
 
-            SetPrevoisScreenState(previosScreenAct, element);
+            SetPreviousScreenState(previousScreenAct, element);
             element.transform.localScale = Vector3.one;
             _screenStack.Add(element);
             element.OnShow(onClose);
@@ -172,7 +172,7 @@ namespace GameWarriors.UIDomain.Core
             int startIndex = isCloseLastScreen ? 0 : 1;
             for (int i = startIndex; i < length; ++i)
             {
-                _screenStack[i].ForceExit();
+                _screenStack[i].OnClose(-1);
                 _uiEventHandler.OnScreenForceClose(_screenStack[i]);
             }
             _screenStack.Clear();
@@ -273,7 +273,7 @@ namespace GameWarriors.UIDomain.Core
             }
         }
 
-        private void SetPrevoisScreenState(EPreviosScreenAct previosScreenAct, UIScreenItem newScreen, float delay = 0)
+        private void SetPreviousScreenState(EPreviousScreenAct previosScreenAct, UIScreenItem newScreen, float delay = 0)
         {
             if (_screenStack.Count > 0)
             {
@@ -281,7 +281,7 @@ namespace GameWarriors.UIDomain.Core
                 UIScreenItem oldScreen = _screenStack[index];
                 switch (previosScreenAct)
                 {
-                    case EPreviosScreenAct.Close:
+                    case EPreviousScreenAct.Close:
                         {
                             if (index > 0)
                             {
@@ -296,7 +296,7 @@ namespace GameWarriors.UIDomain.Core
                             }
                             break;
                         }
-                    case EPreviosScreenAct.Queue:
+                    case EPreviousScreenAct.Queue:
                         {
                             bool deactivate = oldScreen.HasBlackScreen || !newScreen.HasBlackScreen;
                             float openAnimationDuration;
@@ -308,10 +308,10 @@ namespace GameWarriors.UIDomain.Core
                             _uiEventHandler.OnHideScreen(oldScreen);
                             break;
                         }
-                    case EPreviosScreenAct.ForceClose:
+                    case EPreviousScreenAct.ForceClose:
                         {
                             _screenStack.RemoveAt(index);
-                            oldScreen.ForceExit();
+                            oldScreen.OnClose(-1);
                             _uiEventHandler.OnScreenForceClose(oldScreen);
                             break;
                         }
@@ -325,7 +325,7 @@ namespace GameWarriors.UIDomain.Core
             return tmp -= 0.015f;
         }
 
-        private void CheckScreenInstatiateState(string screenName, RectTransform parent)
+        private void CheckScreenInsatiateState(string screenName, RectTransform parent)
         {
             if (!_screenPool.ContainsKey(screenName))
             {
@@ -340,7 +340,7 @@ namespace GameWarriors.UIDomain.Core
             {
                 UIScreenItem prefab = _screenItems[index].ScreenPrefab;
                 UIScreenItem elementBuffer = GameObject.Instantiate(prefab, parent);
-                elementBuffer.Initialization();
+                elementBuffer.OnInitialized();
                 elementBuffer.SetActivation(false);
                 return elementBuffer;
             }
@@ -358,7 +358,7 @@ namespace GameWarriors.UIDomain.Core
                 return 0;
         }
 
-        private void LoadCompelete(UIMainConfig uiMainConfig)
+        private void LoadComplete(UIMainConfig uiMainConfig)
         {
             _screenItems = uiMainConfig.ScreenItems;
             _screenBackPanel = GameObject.Instantiate(uiMainConfig.ScreenBlackPanelPrefab);

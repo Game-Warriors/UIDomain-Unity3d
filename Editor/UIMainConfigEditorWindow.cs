@@ -101,8 +101,11 @@ namespace GameWarriors.UIDomain.MainUIEditor
                     GUILayout.BeginVertical(GUI.skin.button);
                     int index = isInSearch ? _searchIndex[i] : i;
                     UIScreenItemData itemData = _itemPrefabList[index];
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Screen Name:", GUILayout.Width(148));
                     itemData.ScreenKey = GUILayout.TextField(itemData.ScreenKey, maxLength: MAX_SCREEN_NAME_LENGTH);
-                    itemData.ScreenPrefab = EditorGUILayout.ObjectField("Screen Prefab", itemData.ScreenPrefab, typeof(UIScreenItem), true) as UIScreenItem;
+                    GUILayout.EndHorizontal();
+                    itemData.ScreenPrefab = EditorGUILayout.ObjectField("Screen Prefab:", itemData.ScreenPrefab, typeof(UIScreenItem), true) as UIScreenItem;
                     _itemPrefabList[index] = itemData;
                     EditorGUILayout.Space();
                     if (GUILayout.Button("Remove Screen Item"))

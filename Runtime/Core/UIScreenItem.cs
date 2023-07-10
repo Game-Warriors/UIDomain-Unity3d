@@ -12,7 +12,6 @@ namespace GameWarriors.UIDomain.Core
         private static IServiceProvider _serviceProvider;
 
         private Action _onClose;
-        protected Animation _animation;
 
         public IScreen ScreenHandler => _screenHandler;
         public IToast ToastNotification => _toastNotification;
@@ -51,7 +50,7 @@ namespace GameWarriors.UIDomain.Core
         public virtual bool IsActive => gameObject.activeSelf;
         public virtual bool HasLogEvent => true;
 
-        protected Animation Animation => _animation;
+        protected Animation Animation { get; private set; }
         protected virtual string OpenScreenAnimationName => "PanelAnimationOpen";
         protected virtual string CloseScreenAnimationName => "PanelAnimationClose";
 
@@ -63,25 +62,21 @@ namespace GameWarriors.UIDomain.Core
             _toastNotification = ToastNotificationHandler;
         }
 
-        public virtual void Initialization()
+        /// <summary>
+        /// The method triggers just in the screen first time call and after instantiation of screen prefab
+        /// </summary>
+        public virtual void OnInitialized()
         {
-            _animation = GetComponent<Animation>();
+            Animation = GetComponent<Animation>();
             //if (_animation)
             //    _animation.playAutomatically = false;
         }
 
-        public virtual void SetActivation(bool state)
-        {
-            gameObject.SetActive(state);
-            if (state)
-                transform.SetAsLastSibling();
-            else
-                if (!state && IsDestroy)
-            {
-                Destroy(this.gameObject);
-            }
-        }
-
+        /// <summary>
+        /// The method triggers each time screen enabled and shows in UI canvas and be a last screen in screen stack
+        /// </summary>
+        /// <param name="onClose">assigning the action method call to triggers after screen closed</param>
+        /// <param name="showAnimation">to open the screen by playing open screen animation</param>
         public virtual void OnShow(Action onClose = null, bool showAnimation = true)
         {
             if (showAnimation)
@@ -95,6 +90,11 @@ namespace GameWarriors.UIDomain.Core
             gameObject.SetActive(true);
         }
 
+        /// <summary>
+        /// The method triggers when the new screen shows up and the screen goes behind the new screen.
+        /// </summary>
+        /// <param name="isDeactivate">true = the game object disappear by visibility, false = just hide logically</param>
+        /// <param name="delay">if the isDeactivate be true, apply delay to disabling game object. default value is close animation duration</param>
         public virtual void OnHide(bool isDeactivate, float delay = 0)
         {
             if (isDeactivate)
@@ -104,7 +104,7 @@ namespace GameWarriors.UIDomain.Core
 
                 if (delay > 0)
                 {
-                    StartCoroutine(WaitAndAction(delay, Deactive));
+                    StartCoroutine(WaitAndAction(delay, Deactivate));
                     PlayAnimation(CloseScreenAnimationName);
                 }
                 else
@@ -112,28 +112,48 @@ namespace GameWarriors.UIDomain.Core
             }
         }
 
+        /// <summary>
+        /// The method triggers when screen close and remove from screen stack.
+        /// </summary>
+        /// <param name="delay">apply delay to disabling game object. default value is close animation duration</param>
         public virtual void OnClose(float delay = 0)
         {
             _onClose?.Invoke();
             _onClose = null;
-            if (delay <= 0)
+            if (delay == 0)
                 delay = CloseAnimationDuration;
             if (delay > 0)
             {
                 PlayAnimation(CloseScreenAnimationName);
-                StartCoroutine(WaitAndAction(delay, Deactive));
+                StartCoroutine(WaitAndAction(delay, Deactivate));
             }
             else
                 ForceExit();
         }
 
+        /// <summary>
+        /// The method triggers when the screen request for closing by device back button
+        /// </summary>
+        /// <param name="isLastScreen">is the current screen is the last screen in stack</param>
+        /// <param name="showOpenAnimation">to open the screen by playing open screen animation</param>
         public virtual void OnRequestCloseScreen(bool isLastScreen, bool showOpenAnimation)
         {
             if (CanCloseByBack && !isLastScreen)
                 ScreenHandler.CloseScreen(ScreenName, showOpenAnimation);
         }
 
-        public virtual void ForceExit()
+        public void SetActivation(bool state)
+        {
+            gameObject.SetActive(state);
+            if (state)
+                transform.SetAsLastSibling();
+            else if (!state && IsDestroy)
+            {
+                Destroy(this.gameObject);
+            }
+        }
+
+        protected void ForceExit()
         {
             if (!IsDestroy)
                 gameObject.SetActive(false);
@@ -147,7 +167,7 @@ namespace GameWarriors.UIDomain.Core
             action?.Invoke();
         }
 
-        private void Deactive()
+        private void Deactivate()
         {
             gameObject.SetActive(false);
         }
