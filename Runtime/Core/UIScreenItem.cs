@@ -2,6 +2,7 @@
 using GameWarriors.UIDomain.Abstraction;
 using UnityEngine;
 using System.Collections;
+using System.Xml.Linq;
 
 namespace GameWarriors.UIDomain.Core
 {
@@ -68,6 +69,7 @@ namespace GameWarriors.UIDomain.Core
         public virtual void OnInitialized()
         {
             Animation = GetComponent<Animation>();
+            transform.localScale = Vector3.one;
             //if (_animation)
             //    _animation.playAutomatically = false;
         }

@@ -6,12 +6,14 @@ using GameWarriors.UIDomain.Abstraction;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Reflection;
 
 namespace GameWarriors.UIDomain.Core
 {
     public class UISystem : IAspectRatio, IToast, IScreen
     {
         private readonly IUIEventHandler _uiEventHandler;
+        private readonly IDependencyInjector _dependencyInjector;
         private Dictionary<string, UIScreenItem> _screenPool;
         private List<UIScreenItemData> _screenItems;
         private List<UIScreenItem> _screenStack;
@@ -32,11 +34,16 @@ namespace GameWarriors.UIDomain.Core
 
 
         [UnityEngine.Scripting.Preserve]
-        public UISystem(IUIEventHandler eventHandler, IUIResources resources, IServiceProvider serviceProvider)
+        public UISystem(IUIEventHandler eventHandler, IUIResources resources, IDependencyInjector dependencyInjector, IServiceProvider serviceProvider)
         {
             _uiEventHandler = eventHandler;
             if (resources == null)
                 resources = new DefaultResourseLoader();
+
+            if (dependencyInjector == null)
+                dependencyInjector = new DefaultDependencyInjector(serviceProvider);
+
+            _dependencyInjector = dependencyInjector;
             _uiEventHandler.SetUIUpdate(UIUpdate);
             resources.LoadResourceAsync(UIMainConfig.RESOURCES_PATH, LoadComplete);
 
@@ -112,7 +119,7 @@ namespace GameWarriors.UIDomain.Core
             }
 
             SetPreviousScreenState(previousScreenAct, element);
-            element.transform.localScale = Vector3.one;
+
             _screenStack.Add(element);
             element.OnShow(onClose);
             _uiEventHandler.OnOpenScreen(element);
@@ -339,7 +346,8 @@ namespace GameWarriors.UIDomain.Core
             if (index > -1 && index < _screenItems.Count)
             {
                 UIScreenItem prefab = _screenItems[index].ScreenPrefab;
-                UIScreenItem elementBuffer = GameObject.Instantiate(prefab, parent);
+                UIScreenItem elementBuffer = UnityEngine.Object.Instantiate(prefab, parent);
+                _dependencyInjector.Inject(elementBuffer);
                 elementBuffer.OnInitialized();
                 elementBuffer.SetActivation(false);
                 return elementBuffer;

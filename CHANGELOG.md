@@ -1,3 +1,6 @@
+  version : 0.6.9
+  add private properties inject on UI System when screen is instantiated
+
   version : 0.6.8
   polish code structure, improve editor UI and fix clear screen not call OnClose bug
 
