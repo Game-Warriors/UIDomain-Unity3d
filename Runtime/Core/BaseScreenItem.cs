@@ -2,19 +2,18 @@
 using GameWarriors.UIDomain.Abstraction;
 using UnityEngine;
 using System.Collections;
-using System.Xml.Linq;
 
 namespace GameWarriors.UIDomain.Core
 {
-    public abstract class UIScreenItem : MonoBehaviour, IUIScreen
+    public abstract class BaseScreenItem : MonoBehaviour, IScreenItem
     {
-        private static IScreen _screenHandler;
+        private static IScreenStack _screenHandler;
         private static IToast _toastNotification;
         private static IServiceProvider _serviceProvider;
 
         private Action _onClose;
 
-        public IScreen ScreenHandler => _screenHandler;
+        public IScreenStack ScreenHandler => _screenHandler;
         public IToast ToastNotification => _toastNotification;
         public IServiceProvider ServiceProvider => _serviceProvider;
 
@@ -56,7 +55,7 @@ namespace GameWarriors.UIDomain.Core
         protected virtual string CloseScreenAnimationName => "PanelAnimationClose";
 
 
-        public static void Initialization(IScreen screenHandler, IServiceProvider serviceProvider, IToast ToastNotificationHandler)
+        public static void Initialization(IScreenStack screenHandler, IServiceProvider serviceProvider, IToast ToastNotificationHandler)
         {
             _screenHandler = screenHandler;
             _serviceProvider = serviceProvider;
@@ -115,9 +114,9 @@ namespace GameWarriors.UIDomain.Core
         }
 
         /// <summary>
-        /// The method triggers when screen close and remove from screen stack.
+        /// The method triggers when ever screen disable and removed from screens stack.
         /// </summary>
-        /// <param name="delay">apply delay to disabling game object. default value is close animation duration</param>
+        /// <param name="delay">if the isDeactivate be true, apply delay to disabling game object. default value is close animation duration, -1 value will immediately disable screen item</param>
         public virtual void OnClose(float delay = 0)
         {
             _onClose?.Invoke();

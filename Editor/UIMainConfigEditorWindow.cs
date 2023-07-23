@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using System.IO;
 using System;
+using GameWarriors.UIDomain.Abstraction;
 
 namespace GameWarriors.UIDomain.MainUIEditor
 {
@@ -20,7 +21,6 @@ namespace GameWarriors.UIDomain.MainUIEditor
         private RectTransform _toastPrefab;
         private int _toastPoolCount;
 
-        private bool _isDataChange;
         private Vector2 _scrollViewRect;
         private string _searchPattern;
 
@@ -105,8 +105,12 @@ namespace GameWarriors.UIDomain.MainUIEditor
                     GUILayout.Label("Screen Name:", GUILayout.Width(148));
                     itemData.ScreenKey = GUILayout.TextField(itemData.ScreenKey, maxLength: MAX_SCREEN_NAME_LENGTH);
                     GUILayout.EndHorizontal();
-                    itemData.ScreenPrefab = EditorGUILayout.ObjectField("Screen Prefab:", itemData.ScreenPrefab, typeof(UIScreenItem), true) as UIScreenItem;
-                    _itemPrefabList[index] = itemData;
+                    MonoBehaviour screenItem = EditorGUILayout.ObjectField("Screen Prefab:", itemData.ScreenPrefab, typeof(MonoBehaviour), true) as MonoBehaviour;
+                    if (screenItem is IScreenItem)
+                    {
+                        itemData.ScreenPrefab = screenItem;
+                        _itemPrefabList[index] = itemData;
+                    }
                     EditorGUILayout.Space();
                     if (GUILayout.Button("Remove Screen Item"))
                     {

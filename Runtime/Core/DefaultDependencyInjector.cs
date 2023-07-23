@@ -4,6 +4,9 @@ using System.Reflection;
 
 namespace GameWarriors.UIDomain.Core
 {
+    /// <summary>
+    /// This class provide property injection for screen items, by using service provider
+    /// </summary>
     public class DefaultDependencyInjector : IDependencyInjector
     {
         private IServiceProvider _serviceProvider;

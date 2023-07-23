@@ -1,3 +1,6 @@
+  version : 0.7.0
+  refactoring UI system structure and add more single responsible abstraction, decuple UI system from UI screen items class.
+
   version : 0.6.9
   add private properties inject on UI System when screen is instantiated
 

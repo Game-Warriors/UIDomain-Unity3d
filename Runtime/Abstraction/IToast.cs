@@ -2,6 +2,9 @@
 
 namespace GameWarriors.UIDomain.Abstraction
 {
+    /// <summary>
+    /// present showing location of toast in central vertical line of screen
+    /// </summary>
     public enum EToastPlace
     {
         Up,
@@ -18,9 +21,12 @@ namespace GameWarriors.UIDomain.Abstraction
         void Initialization();
     }
 
+    /// <summary>
+    /// The base abstraction which presents screen showing toast features which is specify by visibility time and screen point.
+    /// </summary>
     public interface IToast
     {
-        void ShowToast(string context);
-        void ShowToast(string context, EToastPlace typeMessage);
+        void ShowToast(string context, float lifeTime = 1.5f);
+        void ShowToast(string context, EToastPlace typeMessage, float lifeTime = 1.5f);
     }
 }

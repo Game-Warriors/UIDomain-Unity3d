@@ -1,18 +1,16 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace GameWarriors.UIDomain.Abstraction
 {
     public interface IUIEventHandler
     {
-        void SetUIUpdate(Action uiUpdate);
         void OnToastRises(float showTimeLength, IToastItem toast);
         void OnCloseLastScreen();
-        void OnShowScreen(IUIScreen screen);
-        void OnCloseScreen(IUIScreen screen);
-        void OnOpenScreen(IUIScreen screen);
-        void OnHideScreen(IUIScreen screen);
-        void OnScreenForceClose(IUIScreen screen);
+        void OnShowScreen(IScreenItem screen);
+        void OnCloseScreen(IScreenItem screen);
+        void OnOpenScreen(IScreenItem screen);
+        void OnHideScreen(IScreenItem screen);
+        void OnScreenForceClose(IScreenItem screen);
         void OnCanvasCameraChange(Camera newCamera);
     }
 }

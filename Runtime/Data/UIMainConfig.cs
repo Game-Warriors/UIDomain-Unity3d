@@ -1,28 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GameWarriors.UIDomain.Core;
 using UnityEngine;
 
 namespace GameWarriors.UIDomain.Data
 {
-    [Serializable]
-    public struct UIScreenItemData
-    {
-        [SerializeField]
-        private string _screenKey;
-        [SerializeField]
-        private UIScreenItem _screenPrefab;
-
-        public string ScreenKey { get => _screenKey; set => _screenKey = value; }
-        public UIScreenItem ScreenPrefab { get => _screenPrefab; set => _screenPrefab = value; }
-
-        public UIScreenItemData(string key)
-        {
-            _screenKey = key;
-            _screenPrefab = null;
-        }
-    }
-
     public class UIMainConfig : ScriptableObject
     {
         public const string RESOURCES_PATH = "UIMainConfig";
@@ -63,7 +44,6 @@ namespace GameWarriors.UIDomain.Data
                 if (!string.IsNullOrEmpty(itemPrefabList[i].ScreenKey) && itemPrefabList[i].ScreenPrefab != null)
                     _screenItems.Add(itemPrefabList[i]);
             }
-
         }
 
         public void SetToastNotificationData(RectTransform ToastNotificationPrefab, int ToastNotificationPoolCount)

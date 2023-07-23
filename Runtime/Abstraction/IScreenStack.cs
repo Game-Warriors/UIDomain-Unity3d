@@ -1,5 +1,4 @@
 ﻿using System;
-using GameWarriors.UIDomain.Core;
 using UnityEngine;
 
 namespace GameWarriors.UIDomain.Abstraction
@@ -7,9 +6,19 @@ namespace GameWarriors.UIDomain.Abstraction
     public enum ECanvasType { MainCanvas, ScreenCanvas }
     public enum EPreviousScreenAct { None, Close, Queue, ForceClose }
 
-    public interface IScreen
+    /// <summary>
+    /// The base abstraction which presents screen stack features like, show, close, working with black screen and control screen remove by system back.
+    /// </summary>
+    public interface IScreenStack
     {
-        IUIScreen LastScreen { get; }
+        /// <summary>
+        /// return last open screen in screen stack
+        /// </summary>
+        IScreenItem LastScreen { get; }
+
+        /// <summary>
+        /// return count of open screen in stack
+        /// </summary>
         int OpenScreenCount { get; }
 
         /// <summary>
@@ -29,7 +38,7 @@ namespace GameWarriors.UIDomain.Abstraction
         /// <param name="previousScreenAct">indicate what happen to previous screen after showing desire screen</param>
         /// <param name="onClose">assigning the action method call to triggers after screen closed</param>
         /// <returns></returns>
-        T ShowScreen<T>(string screenName, ECanvasType canvasType, EPreviousScreenAct previousScreenAct, Action onClose = default) where T : UIScreenItem;
+        T ShowScreen<T>(string screenName, ECanvasType canvasType, EPreviousScreenAct previousScreenAct, Action onClose = default) where T : IScreenItem;
         /// <summary>
         /// 
         /// </summary>
@@ -43,11 +52,8 @@ namespace GameWarriors.UIDomain.Abstraction
         /// </summary>
         /// <param name="isCloseLastScreen"></param>
         void ClearScreens(bool isCloseLastScreen = true);
-        void SetBackLockState(bool state);
         bool IsScreenInList(string targetName);
-        T FindScreenInStack<T>(string screenName) where T : UIScreenItem;
-        void LockAllInputs(bool isLockBack = true);
-        void UnlockAllInputs(bool isUnlockBack = true);
-        void ChangeCanvasCamera(Camera newCamera);
+        T FindScreenInStack<T>(string screenName) where T : IScreenItem;
+        void SetBackLockState(bool state);
     }
 }
