@@ -136,6 +136,11 @@ namespace GameWarriors.UIDomain.Core
                 {
                     IScreenItem closeElement = _screenStack[i];
                     _screenStack.RemoveAt(i);
+
+                    IScreenItem lastOpenScreen = null;
+                    if (_screenStack.Count > 0)
+                        lastOpenScreen = _screenStack[_screenStack.Count - 1];
+
                     closeElement.OnClose();
                     _uiEventHandler.OnCloseScreen(closeElement);
 
@@ -145,7 +150,7 @@ namespace GameWarriors.UIDomain.Core
                     else if (closeElement.HasBlackScreen)
                         _screenBackPanel.DisableScreen();
 
-                    if (openScreen != null)
+                    if (openScreen != null && lastOpenScreen == openScreen)
                     {
                         if (!openScreen.HasBlackScreen)
                         {
@@ -319,6 +324,12 @@ namespace GameWarriors.UIDomain.Core
                             _screenStack.RemoveAt(index);
                             oldScreen.OnClose(-1);
                             _uiEventHandler.OnScreenForceClose(oldScreen);
+                            break;
+                        }
+                        case EPreviousScreenAct.None:
+                        {
+                            oldScreen.OnHide(false, 0);
+                            _uiEventHandler.OnHideScreen(oldScreen);
                             break;
                         }
                 }

@@ -3,7 +3,7 @@
 namespace GameWarriors.UIDomain.Abstraction
 {
     /// <summary>
-    /// present showing location of toast in central vertical line of screen
+    /// Present showing location of toast in central vertical line of screen
     /// </summary>
     public enum EToastPlace
     {

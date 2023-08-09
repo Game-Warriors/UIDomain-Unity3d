@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace GameWarriors.UIDomain.Abstraction
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IUIOperation
     {
         void LockAllInputs(bool isLockBack = true);
