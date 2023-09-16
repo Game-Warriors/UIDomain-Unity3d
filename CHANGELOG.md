@@ -1,5 +1,5 @@
   version : 0.7.1
-  fix closing screen event trigger place. Update readme.
+  fix closing screen event trigger place. udpate readme
 
   version : 0.7.0
   refactoring UI system structure and add more single responsible abstraction, decuple UI system from UI screen items class.

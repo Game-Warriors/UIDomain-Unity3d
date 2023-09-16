@@ -2,6 +2,11 @@ using System;
 
 namespace GameWarriors.UIDomain.Abstraction
 {
+    public enum EScreenState { None, Open, Hide, Close }
+
+    /// <summary>
+    /// The base abstraction which presents screen stack features like, show, close, working with black screen and control screen remove by system back.
+    /// </summary>
     public interface IScreenItem
     {
         bool HasBlackScreen { get; }
