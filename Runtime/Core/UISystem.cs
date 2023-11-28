@@ -243,21 +243,7 @@ namespace GameWarriors.UIDomain.Core
 
         void IUIOperation.SystemUpdate()
         {
-            if (Input.GetKeyDown(KeyCode.Escape) && !_backLockState)
-            {
-                int lastIndex = _screenStack.Count - 1;
-                if (lastIndex > 0)
-                {
-                    IScreenItem lastScreen = _screenStack[lastIndex];
-                    lastScreen.OnRequestCloseScreen(false, true);
-                }
-                else if (lastIndex == 0)
-                {
-                    IScreenItem lastScreen = _screenStack[lastIndex];
-                    lastScreen.OnRequestCloseScreen(true, false);
-                    _uiEventHandler.OnCloseLastScreen();
-                }
-            }
+
         }
 
         public Transform ShowBlackScreen()
@@ -282,6 +268,25 @@ namespace GameWarriors.UIDomain.Core
                 }
             }
             return default;
+        }
+
+        void IUIOperation.ApplyBackButton()
+        {
+            if (!_backLockState)
+            {
+                int lastIndex = _screenStack.Count - 1;
+                if (lastIndex > 0)
+                {
+                    IScreenItem lastScreen = _screenStack[lastIndex];
+                    lastScreen.OnRequestCloseScreen(false, true);
+                }
+                else if (lastIndex == 0)
+                {
+                    IScreenItem lastScreen = _screenStack[lastIndex];
+                    lastScreen.OnRequestCloseScreen(true, false);
+                    _uiEventHandler.OnCloseLastScreen();
+                }
+            }
         }
 
         private void SetPreviousScreenState(EPreviousScreenAct previosScreenAct, IScreenItem newScreen, float delay = 0)
@@ -362,9 +367,7 @@ namespace GameWarriors.UIDomain.Core
                 elementBuffer.SetActivation(false);
                 return elementBuffer;
             }
-
-            Debug.LogError(screenName + " not found");
-            return null;
+            throw new KeyNotFoundException(screenName + " not found");
         }
 
         private float CalculateScaleFactor()

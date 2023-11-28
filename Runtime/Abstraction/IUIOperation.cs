@@ -11,5 +11,6 @@ namespace GameWarriors.UIDomain.Abstraction
         void UnlockAllInputs(bool isUnlockBack = true);
         void ChangeCanvasCamera(Camera newCamera);
         void SystemUpdate();
+        void ApplyBackButton();
     }
 }

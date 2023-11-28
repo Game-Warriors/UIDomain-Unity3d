@@ -1,3 +1,6 @@
+  version : 0.7.2
+  change back button apply pipeline and remove depedency to old unity input system
+
   version : 0.7.1
   fix closing screen event trigger place. udpate readme
 
