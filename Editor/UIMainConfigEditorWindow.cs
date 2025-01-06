@@ -23,6 +23,7 @@ namespace GameWarriors.UIDomain.MainUIEditor
 
         private Vector2 _scrollViewRect;
         private string _searchPattern;
+        private string _assetPath;
 
         public bool IsInSearch => !string.IsNullOrEmpty(_searchPattern);
 
@@ -33,17 +34,18 @@ namespace GameWarriors.UIDomain.MainUIEditor
                 Directory.CreateDirectory("Assets/AssetData/Resources/");
 
             UIMainConfigEditorWindow window = (UIMainConfigEditorWindow)EditorWindow.GetWindow(typeof(UIMainConfigEditorWindow));
-            window.Initialization();
+            window.Initialization(UIMainConfig.ASSET_PATH);
             window.Show();
         }
 
-        private void Initialization()
+        public void Initialization(string assetPath)
         {
-            UIMainConfig asset = AssetDatabase.LoadAssetAtPath<UIMainConfig>(UIMainConfig.ASSET_PATH);
+            _assetPath = assetPath;
+            UIMainConfig asset = AssetDatabase.LoadAssetAtPath<UIMainConfig>(assetPath);
             if (asset == null)
             {
                 asset = CreateInstance<UIMainConfig>();
-                AssetDatabase.CreateAsset(asset, UIMainConfig.ASSET_PATH);
+                AssetDatabase.CreateAsset(asset, assetPath);
             }
             if (asset.ScreenItems != null)
                 _itemPrefabList = new List<UIScreenItemData>(asset.ScreenItems);
@@ -70,7 +72,7 @@ namespace GameWarriors.UIDomain.MainUIEditor
             DrawPopupNofiticationConfig();
             EditorGUILayout.Space();
 
-            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+            EditorGUILayout.LabelField(string.Empty, GUI.skin.horizontalSlider);
             _scrollViewRect = EditorGUILayout.BeginScrollView(_scrollViewRect, GUILayout.Height(position.height - 150), GUILayout.Width(position.width));
             DrawScreenPrefabList();
             EditorGUILayout.EndScrollView();
@@ -139,7 +141,7 @@ namespace GameWarriors.UIDomain.MainUIEditor
             EditorGUILayout.Space();
             if (GUILayout.Button("Save Configuration Asset"))
             {
-                UIMainConfig asset = AssetDatabase.LoadAssetAtPath<UIMainConfig>(UIMainConfig.ASSET_PATH);
+                UIMainConfig asset = AssetDatabase.LoadAssetAtPath<UIMainConfig>(_assetPath);
                 asset.SetScreensData(_itemPrefabList);
                 asset.SetToastNotificationData(_toastPrefab, _toastPoolCount);
                 asset.SetPanelData(_screenBlackPanel, _screenLockPanel);

@@ -1,3 +1,6 @@
+  version : 0.7.3
+  improve editor tools to be compatible with multi asset data, by recieving input asset path in editor window class
+
   version : 0.7.2
   change back button apply pipeline and remove depedency to old unity input system
 
